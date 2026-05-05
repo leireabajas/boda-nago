@@ -306,12 +306,35 @@
             </div>
         `).join('');
 
-        document.getElementById('detalles-list').innerHTML = subs.map(s => s.dieta_detalles ? genCard(s, `
-            <div>
-                <b class="text-rose-600 uppercase text-[10px] block font-black mb-1">${s.nombre}</b>
-                <span class="text-slate-800 font-black text-sm capitalize">${s.dieta_detalles}</span>
-            </div>
-        `) : '').join('');
+        const alergiasAgrupadas = {};
+
+        subs.forEach(s => {
+            const detalle = (s.dieta_detalles || '').trim();
+
+            if (detalle) {
+                const clave = detalle.toLowerCase();
+
+                if (!alergiasAgrupadas[clave]) {
+                    alergiasAgrupadas[clave] = {
+                        texto: detalle,
+                        personas: []
+                    };
+                }
+
+                alergiasAgrupadas[clave].personas.push(s.nombre);
+            }
+        });
+
+        document.getElementById('detalles-list').innerHTML = Object.values(alergiasAgrupadas).map(item => `
+    <div class="p-4 rounded-2xl border-2 border-slate-100 transition shadow-sm bg-slate-50">
+        <b class="text-rose-600 uppercase text-[10px] block font-black mb-1">
+            ${item.personas.join(', ')}
+        </b>
+        <span class="text-slate-800 font-black text-sm capitalize">
+            ${item.texto}
+        </span>
+    </div>
+`).join('');
 
         document.getElementById('bebidas-list').innerHTML = subs.map(s => s.bebida ? `
             <div class="item-filtrable p-3 rounded-xl border-l-4 border-blue-500 bg-slate-50 shadow-sm flex flex-col justify-center h-fit"
