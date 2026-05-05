@@ -516,10 +516,9 @@
 
         doc.autoTable({
             startY: 25,
-            head: [['Nombre', 'Personas grupo', 'Dieta', 'Alergias / Detalles']],
+            head: [['Nombre', 'Dieta', 'Alergias / Detalles']],
             body: datosRestaurante.map(s => [
                 s.nombre || '-',
-                s.nombres_grupo || '-',
                 s.dieta || '-',
                 s.dieta_detalles || '-'
             ]),
