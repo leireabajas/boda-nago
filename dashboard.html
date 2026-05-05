@@ -147,6 +147,7 @@
                         <th class="p-4 font-black text-center">Vuelta</th>
                         <th class="p-4 font-black text-center">Preboda</th>
                         <th class="p-4 font-black">Dieta</th>
+                        <th class="p-4 font-black">Alergias</th>
                         <th class="p-4 font-black text-blue-800">Bebida</th>
                     </tr>
                     </thead>
@@ -317,13 +318,17 @@
                     </span>
                 </td>
 
-                <td class="p-4 text-[12px] font-black italic max-w-[120px] truncate text-slate-800">
-                    ${s.dieta || '-'}
-                </td>
+               <td class="p-4 text-[12px] font-black italic max-w-[120px] truncate text-slate-800">
+    ${s.dieta || '-'}
+</td>
 
-                <td class="p-4 text-[12px] font-black text-blue-800 bg-blue-50/50 italic">
-                    ${s.bebida || '-'}
-                </td>
+<td class="p-4 text-[12px] font-black italic max-w-[180px] text-rose-700">
+    ${s.dieta_detalles || '-'}
+</td>
+
+<td class="p-4 text-[12px] font-black text-blue-800 bg-blue-50/50 italic">
+    ${s.bebida || '-'}
+</td>
             </tr>`;
         }).join('');
 
