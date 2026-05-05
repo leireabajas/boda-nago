@@ -17,8 +17,9 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
         .animate-fade-in { animation: fadeIn 1.2s ease-out forwards; }
-        .hidden { display: none !important; } /* Añadimos !important para asegurar que oculte */
+        .hidden { display: none !important; }
     </style>
 </head>
 
@@ -28,7 +29,7 @@
 
     <header class="text-center mb-12">
         <h1 class="titulo-boda text-7xl text-amber-700 mb-2">Nagore & Jose</h1>
-        <p class="text-xs tracking-[0.4em] uppercase text-gray-400 mb-8 italic italic">6 de Junio de 2026</p>
+        <p class="text-xs tracking-[0.4em] uppercase text-gray-800 mb-8 italic font-semibold">6 de Junio de 2026</p>
 
         <div id="countdown" class="flex justify-center gap-4 text-center">
             <div class="bg-white/60 backdrop-blur-md p-4 rounded-2xl shadow-sm border border-white min-w-[85px]">
@@ -53,10 +54,11 @@
 
             <div class="mb-10">
                 <label class="block text-lg font-semibold mb-4 text-gray-700 italic">👤 ¿Quiénes sois?</label>
+
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <input type="text" name="nombre" required
                            class="md:col-span-2 w-full p-4 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-amber-200 outline-none transition"
-                           placeholder="Nombre y Apellidos">
+                           placeholder="Nombre principal / familia">
 
                     <select name="invitados" id="select-invitados" required
                             class="w-full p-4 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-amber-200 outline-none transition">
@@ -64,20 +66,37 @@
                         <option value="2">Somos 2</option>
                         <option value="familia">Familia/Grupo</option>
                     </select>
+
+                    <div id="nombres-extra-container" class="hidden md:col-span-3 mt-2 space-y-3">
+                        <p class="text-xs text-gray-800 italic font-semibold">
+                            Escribid el nombre y apellidos de cada persona. Si hay alergias, dietas o canciones distintas, recomendamos rellenar un formulario por persona.
+                        </p>
+
+                        <div id="nombres-extra-list" class="space-y-3"></div>
+
+                        <button type="button" id="add-persona-btn"
+                                class="hidden text-xs font-bold text-amber-700 border border-amber-700 px-4 py-2 rounded-xl hover:bg-amber-50 transition">
+                            + Añadir otra persona
+                        </button>
+                    </div>
                 </div>
 
-                <div id="aviso-invitados" class="hidden mt-4 p-4 bg-amber-50 border border-amber-200 rounded-xl animate-fade-in text-sm text-amber-900 italic">
+                <div id="aviso-invitados" class="hidden mt-4 p-4 bg-amber-50 border border-amber-200 rounded-xl animate-fade-in text-sm text-amber-900 italic font-semibold">
                     📍 <b>Tip de Nagore y Jose:</b> Si tenéis dietas diferentes o queréis pedir canciones distintas, os recomendamos rellenar <u>un formulario por cada persona</u>. ¡Así no se nos escapará nada!
                 </div>
             </div>
 
             <div class="mb-10">
                 <label class="block text-lg font-semibold mb-2 text-gray-700 italic">🍕 ¿Preboda?</label>
-                <p class="text-xs text-gray-400 mb-4 font-light">5 de junio - 20:30h</p>
+                <p class="text-xs text-gray-800 mb-4 font-semibold italic">
+                    5 de junio - 20:30h (se confirmará más cerca de la fecha)
+                </p>
+
                 <div class="flex gap-4">
                     <label class="flex-1 border-2 border-gray-50 p-4 rounded-2xl cursor-pointer hover:border-amber-200 hover:bg-amber-50/30 transition flex items-center justify-center gap-2 text-sm">
                         <input type="radio" name="preboda" value="si" class="accent-amber-600" required> ¡Sí!
                     </label>
+
                     <label class="flex-1 border-2 border-gray-50 p-4 rounded-2xl cursor-pointer hover:border-amber-200 hover:bg-gray-50 transition flex items-center justify-center gap-2 text-sm">
                         <input type="radio" name="preboda" value="no" class="accent-amber-600"> No puedo
                     </label>
@@ -85,13 +104,30 @@
             </div>
 
             <div class="mb-10">
-                <label class="block text-lg font-semibold mb-4 text-gray-700 italic">🚌 Autobús</label>
+                <label class="block text-lg font-semibold mb-4 text-gray-700 italic">🚌 Autobús de ida</label>
+
                 <select name="autobus" required
                         class="w-full p-4 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-amber-200 outline-none transition">
                     <option value="" disabled selected>¿Reservamos sitio para el día 6?</option>
                     <option value="si">Sí, ¡guardadme sitio!</option>
                     <option value="no">No, iré por mi cuenta</option>
                 </select>
+            </div>
+
+            <div class="mb-10">
+                <label class="block text-lg font-semibold mb-4 text-gray-700 italic">🚌 Vuelta en autobús</label>
+
+                <select name="bus_vuelta"
+                        class="w-full p-4 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-amber-200 outline-none transition">
+                    <option value="">No necesito vuelta</option>
+                    <option value="00:00">00:00</option>
+                    <option value="01:30">01:30</option>
+                    <option value="02:00">02:00</option>
+                </select>
+
+                <p class="text-[11px] text-gray-800 mt-2 italic font-semibold">
+                    Elige la hora aproximada de vuelta para ayudarnos a organizar los buses.
+                </p>
             </div>
 
             <div class="mb-10">
@@ -102,14 +138,17 @@
                         <input type="checkbox" name="dieta" value="Vegano" class="mr-3 accent-amber-600">
                         <span class="text-sm">Vegano/a</span>
                     </label>
+
                     <label class="flex items-center p-3 bg-gray-50 rounded-xl cursor-pointer hover:bg-amber-50 transition border border-transparent hover:border-amber-100">
                         <input type="checkbox" name="dieta" value="Vegetariano" class="mr-3 accent-amber-600">
                         <span class="text-sm">Vegetariano/a</span>
                     </label>
+
                     <label class="flex items-center p-3 bg-gray-50 rounded-xl cursor-pointer hover:bg-amber-50 transition border border-transparent hover:border-amber-100">
                         <input type="checkbox" name="dieta" value="Sin Gluten" class="mr-3 accent-amber-600">
                         <span class="text-sm">Sin Gluten</span>
                     </label>
+
                     <label class="flex items-center p-3 bg-gray-50 rounded-xl cursor-pointer hover:bg-amber-50 transition border border-transparent hover:border-amber-100">
                         <input type="checkbox" name="dieta" value="Sin Lactosa" class="mr-3 accent-amber-600">
                         <span class="text-sm">Sin Lactosa</span>
@@ -117,7 +156,10 @@
                 </div>
 
                 <div class="mt-2">
-                    <label class="block text-xs text-gray-400 mb-2 px-1">¿Alguna otra alergia o detalle importante?</label>
+                    <label class="block text-xs text-gray-800 mb-2 px-1 font-semibold italic">
+                        ¿Alguna otra alergia o detalle importante?
+                    </label>
+
                     <textarea name="dieta_detalles" rows="2"
                               class="w-full p-4 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-amber-200 outline-none transition"
                               placeholder="Ej: Alergia a los frutos secos, al marisco..."></textarea>
@@ -127,15 +169,21 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
                 <div>
                     <label class="block text-sm font-semibold mb-2 text-amber-700 italic">🍸 Bebida favorita</label>
+
                     <input type="text" name="bebida"
                            class="w-full p-4 bg-gray-50 border-none rounded-xl outline-none focus:ring-2 focus:ring-amber-200"
                            placeholder="Ej: Gin Tonic">
                 </div>
+
                 <div class="relative">
-                    <label class="block text-sm font-semibold mb-2 text-amber-700 italic">💃 Canción</label>
+                    <label class="block text-sm font-semibold mb-2 text-amber-700 italic">
+                        💃 Canción que no puede faltar
+                    </label>
+
                     <input type="text" id="song-search" name="cancion"
                            class="w-full p-4 bg-gray-50 border-none rounded-xl outline-none focus:ring-2 focus:ring-amber-200"
                            placeholder="Busca tu tema..." autocomplete="off">
+
                     <div id="song-results" class="absolute z-20 w-full bg-white shadow-2xl rounded-b-xl hidden max-h-60 overflow-y-auto mt-1 border border-amber-50"></div>
                 </div>
             </div>
@@ -149,7 +197,10 @@
 
     <div id="thank-you-message" class="hidden text-center bg-white p-12 rounded-[2rem] shadow-xl border border-amber-50">
         <h2 class="titulo-boda text-5xl text-amber-700 mb-4">¡Muchas gracias!</h2>
-        <p class="text-gray-600 mb-6 font-light italic text-sm italic">Tu confirmación ha llegado correctamente.</p>
+
+        <p class="text-gray-800 mb-6 font-semibold italic text-sm">
+            Tu confirmación ha llegado correctamente.
+        </p>
 
         <button onclick="window.location.reload()"
                 class="text-amber-700 border border-amber-700 px-6 py-2 rounded-xl hover:bg-amber-50 transition text-xs font-semibold mb-8">
@@ -159,9 +210,6 @@
         <div class="text-4xl">🥂💖🚑🔥</div>
     </div>
 
-    <footer class="text-center mt-12 text-gray-400 text-[10px] tracking-widest uppercase font-light">
-        Hecho con ❤️ por la mejor hermana programadora
-    </footer>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -169,67 +217,156 @@
 <script>
     // --- 1. CONTADOR ---
     const targetDate = new Date('June 6, 2026 18:30:00').getTime();
+
     function updateCountdown() {
         const now = new Date().getTime();
         const diff = targetDate - now;
+
         document.getElementById('days').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
         document.getElementById('hours').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
         document.getElementById('minutes').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
     }
+
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
     // --- 2. BUSCADOR DE CANCIONES ---
     const songInput = document.getElementById('song-search');
     const resultsDiv = document.getElementById('song-results');
+
     songInput.addEventListener('input', async (e) => {
         const query = e.target.value;
-        if (query.length < 3) { resultsDiv.classList.add('hidden'); return; }
+
+        if (query.length < 3) {
+            resultsDiv.classList.add('hidden');
+            return;
+        }
+
         try {
             const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=5`);
             const data = await res.json();
+
             resultsDiv.innerHTML = '';
+
             if (data.results.length > 0) {
                 resultsDiv.classList.remove('hidden');
+
                 data.results.forEach(track => {
                     const row = document.createElement('div');
                     row.className = 'p-3 hover:bg-amber-50 cursor-pointer flex items-center gap-3 border-b border-gray-50';
-                    row.innerHTML = `<img src="${track.artworkUrl30}" class="rounded"><div><p class="text-xs font-bold">${track.trackName}</p><p class="text-[10px] text-gray-400">${track.artistName}</p></div>`;
-                    row.onclick = () => { songInput.value = `${track.trackName} - ${track.artistName}`; resultsDiv.classList.add('hidden'); };
+
+                    row.innerHTML = `
+                        <img src="${track.artworkUrl30}" class="rounded">
+                        <div>
+                            <p class="text-xs font-bold">${track.trackName}</p>
+                            <p class="text-[10px] text-gray-800 font-semibold">${track.artistName}</p>
+                        </div>
+                    `;
+
+                    row.onclick = () => {
+                        songInput.value = `${track.trackName} - ${track.artistName}`;
+                        resultsDiv.classList.add('hidden');
+                    };
+
                     resultsDiv.appendChild(row);
                 });
             }
-        } catch (err) { console.log(err); }
+        } catch (err) {
+            console.log(err);
+        }
     });
 
-    // --- 3. ENVÍO DEL FORMULARIO ---
+    // --- 3. LÓGICA DE INVITADOS Y NOMBRES EXTRA ---
+    const selectInvitados = document.getElementById('select-invitados');
+    const avisoInvitados = document.getElementById('aviso-invitados');
+    const nombresExtraContainer = document.getElementById('nombres-extra-container');
+    const nombresExtraList = document.getElementById('nombres-extra-list');
+    const addPersonaBtn = document.getElementById('add-persona-btn');
+
+    function crearCampoNombre(numero) {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.name = 'nombres_grupo';
+        input.required = true;
+        input.className = 'w-full p-4 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-amber-200 outline-none transition';
+        input.placeholder = `Nombre y apellidos persona ${numero}`;
+        return input;
+    }
+
+    function pintarCamposPersonas(cantidad, permiteAñadir = false) {
+        nombresExtraList.innerHTML = '';
+
+        for (let i = 1; i <= cantidad; i++) {
+            nombresExtraList.appendChild(crearCampoNombre(i));
+        }
+
+        nombresExtraContainer.classList.remove('hidden');
+        addPersonaBtn.classList.toggle('hidden', !permiteAñadir);
+    }
+
+    selectInvitados.addEventListener('change', function() {
+        if (this.value === '1') {
+            avisoInvitados.classList.add('hidden');
+            nombresExtraContainer.classList.add('hidden');
+            nombresExtraList.innerHTML = '';
+            addPersonaBtn.classList.add('hidden');
+        }
+
+        if (this.value === '2') {
+            avisoInvitados.classList.remove('hidden');
+            pintarCamposPersonas(2, false);
+        }
+
+        if (this.value === 'familia') {
+            avisoInvitados.classList.remove('hidden');
+            pintarCamposPersonas(4, true);
+        }
+    });
+
+    addPersonaBtn.addEventListener('click', function() {
+        const numero = nombresExtraList.children.length + 1;
+        nombresExtraList.appendChild(crearCampoNombre(numero));
+    });
+
+    // --- 4. ENVÍO DEL FORMULARIO ---
     const form = document.getElementById('wedding-form');
     const formContainer = document.getElementById('form-container');
     const thankYouMessage = document.getElementById('thank-you-message');
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#bfa37e', '#fdfaf7', '#a88e6a'] });
+
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#bfa37e', '#fdfaf7', '#a88e6a']
+        });
 
         const formData = new FormData(form);
 
-        // Convertir FormData a URLSearchParams para Google Apps Script
+        const nombresGrupo = Array.from(document.querySelectorAll('input[name="nombres_grupo"]'))
+            .map(input => input.value.trim())
+            .filter(Boolean)
+            .join(', ');
+
+        if (nombresGrupo) {
+            formData.set('nombres_grupo', nombresGrupo);
+        }
+
         const data = new URLSearchParams();
+
         for (const pair of formData) {
             data.append(pair[0], pair[1]);
         }
 
         try {
-            // Enviamos con modo no-cors porque Google Apps Script a veces da problemas de CORS
-            // pero el dato llega igual.
             fetch(form.action, {
                 method: 'POST',
                 body: data,
                 mode: 'no-cors'
             });
 
-            // Como usamos no-cors no podemos leer la respuesta ok,
-            // así que asumimos éxito tras el envío.
             formContainer.classList.add('hidden');
             thankYouMessage.classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -239,19 +376,12 @@
         }
     });
 
-    // --- 4. LÓGICA DEL AVISO ---
-    const selectInvitados = document.getElementById('select-invitados');
-    const avisoInvitados = document.getElementById('aviso-invitados');
-
-    selectInvitados.addEventListener('change', function() {
-        if (this.value !== '1') {
-            avisoInvitados.classList.remove('hidden');
-        } else {
-            avisoInvitados.classList.add('hidden');
+    document.addEventListener('click', (e) => {
+        if (e.target !== songInput) {
+            resultsDiv.classList.add('hidden');
         }
     });
-
-    document.addEventListener('click', (e) => { if (e.target !== songInput) resultsDiv.classList.add('hidden'); });
 </script>
+
 </body>
 </html>
