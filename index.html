@@ -130,7 +130,7 @@
                 </p>
             </div>
 
-            <div class="mb-10">
+            <div class="mb-10" id="bloque-dietas">
                 <label class="block text-lg font-semibold mb-4 text-gray-700 italic">🥦 Restricciones alimentarias</label>
 
                 <div class="grid grid-cols-2 gap-3 mb-4">
@@ -282,6 +282,7 @@
     const nombresExtraContainer = document.getElementById('nombres-extra-container');
     const nombresExtraList = document.getElementById('nombres-extra-list');
     const addPersonaBtn = document.getElementById('add-persona-btn');
+    const bloqueDietas = document.getElementById('bloque-dietas');
 
     function crearCampoNombre(numero) {
         const input = document.createElement('input');
@@ -303,6 +304,16 @@
         nombresExtraContainer.classList.remove('hidden');
         addPersonaBtn.classList.toggle('hidden', !permiteAñadir);
     }
+    function limpiarDietas() {
+        document.querySelectorAll('input[name="dieta"]').forEach(input => {
+            input.checked = false;
+        });
+
+        const detalles = document.querySelector('textarea[name="dieta_detalles"]');
+        if (detalles) {
+            detalles.value = '';
+        }
+    }
 
     selectInvitados.addEventListener('change', function() {
         if (this.value === '1') {
@@ -310,16 +321,21 @@
             nombresExtraContainer.classList.add('hidden');
             nombresExtraList.innerHTML = '';
             addPersonaBtn.classList.add('hidden');
+            bloqueDietas.classList.remove('hidden');
         }
 
         if (this.value === '2') {
             avisoInvitados.classList.remove('hidden');
             pintarCamposPersonas(2, false);
+            bloqueDietas.classList.add('hidden');
+            limpiarDietas();
         }
 
         if (this.value === 'familia') {
             avisoInvitados.classList.remove('hidden');
             pintarCamposPersonas(4, true);
+            bloqueDietas.classList.add('hidden');
+            limpiarDietas();
         }
     });
 
