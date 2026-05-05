@@ -57,9 +57,12 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <input type="text" name="nombre" required
-                           class="md:col-span-2 w-full p-4 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-amber-200 outline-none transition"
-                           placeholder="Nombre principal / familia">
+                           class="w-full p-4 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-amber-200 outline-none transition"
+                           placeholder="Nombre">
 
+                    <input type="text" name="apellido" required
+                           class="w-full p-4 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-amber-200 outline-none transition"
+                           placeholder="Apellido">
                     <select name="invitados" id="select-invitados" required
                             class="w-full p-4 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-amber-200 outline-none transition">
                         <option value="1">Vengo solo</option>
@@ -360,6 +363,10 @@
         });
 
         const formData = new FormData(form);
+        const nombre = formData.get('nombre');
+        const apellido = formData.get('apellido');
+
+        formData.set('nombre', `${nombre} ${apellido}`);
 
         const nombresGrupo = Array.from(document.querySelectorAll('input[name="nombres_grupo"]'))
             .map(input => input.value.trim())
