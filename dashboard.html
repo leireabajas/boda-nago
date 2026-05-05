@@ -130,6 +130,31 @@
         </div>
     </div>
 
+    <div class="bg-white p-8 rounded-[2.5rem] shadow-lg border border-slate-200 mb-8">
+        <h2 class="text-[12px] font-black mb-6 text-slate-800 uppercase tracking-widest italic">
+            📊 Resumen rápido
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+                <h3 class="text-[11px] font-black mb-2 text-blue-700 uppercase">🍸 Bebidas top</h3>
+                <div id="resumen-bebidas" class="text-sm font-bold space-y-1"></div>
+            </div>
+
+            <div>
+                <h3 class="text-[11px] font-black mb-2 text-purple-700 uppercase">🎵 Canciones repetidas</h3>
+                <div id="resumen-canciones" class="text-sm font-bold space-y-1"></div>
+            </div>
+
+            <div>
+                <h3 class="text-[11px] font-black mb-2 text-indigo-700 uppercase">🚌 Vuelta bus</h3>
+                <div id="resumen-bus" class="text-sm font-bold space-y-1"></div>
+            </div>
+        </div>
+    </div>
+
+
+
     <div class="px-2" id="seccion-tabla">
         <details class="group bg-slate-800 rounded-[2.5rem] shadow-2xl overflow-hidden border-4 border-slate-700">
             <summary class="p-6 cursor-pointer flex justify-between items-center text-white group-open:bg-slate-900 transition">
@@ -217,6 +242,20 @@
                 ? (el.tagName === 'TR' ? 'table-row' : 'flex')
                 : 'none';
         });
+    }
+
+    function contarValores(data, campo) {
+        const conteo = {};
+
+        data.forEach(s => {
+            const valor = (s[campo] || '').trim();
+
+            if (valor) {
+                conteo[valor] = (conteo[valor] || 0) + 1;
+            }
+        });
+
+        return Object.entries(conteo).sort((a, b) => b[1] - a[1]);
     }
 
     function renderDashboard(subs) {
@@ -331,6 +370,25 @@
 </td>
             </tr>`;
         }).join('');
+
+        const bebidasTop = contarValores(subs, 'bebida');
+        const cancionesTop = contarValores(subs, 'cancion');
+        const busTop = contarValores(subs, 'bus_vuelta');
+
+        document.getElementById('resumen-bebidas').innerHTML =
+            bebidasTop.length
+                ? bebidasTop.slice(0, 5).map(([k, v]) => `${k} — ${v}`).join('<br>')
+                : 'Sin bebidas';
+
+        document.getElementById('resumen-canciones').innerHTML =
+            cancionesTop.filter(([k, v]) => v > 1).length
+                ? cancionesTop.filter(([k, v]) => v > 1).slice(0, 5).map(([k, v]) => `${k} — ${v}`).join('<br>')
+                : 'Sin repeticiones';
+
+        document.getElementById('resumen-bus').innerHTML =
+            busTop.length
+                ? busTop.map(([k, v]) => `${k} — ${v}`).join('<br>')
+                : 'Sin vueltas';
 
         aplicarFiltroMaestro(ultimoFiltro);
     }
