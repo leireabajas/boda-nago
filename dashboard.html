@@ -72,6 +72,10 @@
             <button onclick="downloadPDF()" class="flex-1 md:flex-none bg-emerald-700 text-white px-8 py-4 rounded-2xl font-black shadow-lg active:scale-95 transition tracking-tight uppercase text-xs">
                 Descargar PDF
             </button>
+
+            <button onclick="downloadRestaurantePDF()" class="flex-1 md:flex-none bg-rose-700 text-white px-8 py-4 rounded-2xl font-black shadow-lg active:scale-95 transition tracking-tight uppercase text-xs">
+                PDF Restaurante
+            </button>
         </div>
     </header>
 
@@ -473,6 +477,35 @@
         });
 
         doc.save("boda_lista_oficial.pdf");
+    }
+
+    function downloadRestaurantePDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF('l', 'mm', 'a4');
+
+        const datosRestaurante = currentData.filter(s =>
+            (s.dieta && s.dieta.trim() !== '') ||
+            (s.dieta_detalles && s.dieta_detalles.trim() !== '')
+        );
+
+        doc.setFontSize(22);
+        doc.text("RESTAURANTE - DIETAS Y ALERGIAS", 14, 15);
+
+        doc.autoTable({
+            startY: 25,
+            head: [['Nombre', 'Personas grupo', 'Dieta', 'Alergias / Detalles']],
+            body: datosRestaurante.map(s => [
+                s.nombre || '-',
+                s.nombres_grupo || '-',
+                s.dieta || '-',
+                s.dieta_detalles || '-'
+            ]),
+            theme: 'grid',
+            headStyles: { fillColor: [190, 18, 60], fontStyle: 'bold' },
+            styles: { fontSize: 9, fontStyle: 'bold' }
+        });
+
+        doc.save("restaurante_dietas_alergias.pdf");
     }
 
     fetchGoogleData();
