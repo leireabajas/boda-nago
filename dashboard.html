@@ -394,13 +394,29 @@
     }
 
     function copiarCanciones() {
-        const txt = currentData
-            .filter(s => s.cancion)
-            .map(s => `🎵 ${s.cancion} (pide ${s.nombre})`)
+        const cancionesUnicas = {};
+
+        currentData.forEach(s => {
+            if (s.cancion) {
+                const key = s.cancion.trim().toLowerCase();
+
+                if (!cancionesUnicas[key]) {
+                    cancionesUnicas[key] = {
+                        nombre: s.cancion,
+                        personas: []
+                    };
+                }
+
+                cancionesUnicas[key].personas.push(s.nombre);
+            }
+        });
+
+        const txt = Object.values(cancionesUnicas)
+            .map(c => `🎵 ${c.nombre} (pedida por: ${c.personas.join(', ')})`)
             .join('\n');
 
         navigator.clipboard.writeText(txt);
-        alert("¡Lista copiada! 🎧");
+        alert("🎧 Lista sin duplicados copiada");
     }
 
     function downloadPDF() {
